@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    hostname: my-mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_USER: sample_user
+      MYSQL_DATABASE: sample_db
+      MYSQL_ROOT_PASSWORD: sample_passwd
+      TZ: "Asia/Tokyo"
+      BIND-ADDRESS: 0.0.0.0
+    ports:
+      - 3306:3306
+    volumes:
+      # 初期データを投入するSQLが格納されているディレクトリ
+      - ./db/mysql_init:/docker-entrypoint-initdb.d
+      # 永続化するときにマウントするディレクトリ
+      #- ./db/mysql_data:/var/lib/mysql
+    tty: true
